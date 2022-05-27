@@ -10,6 +10,17 @@
 *.userosscache
 *.sln.docstates
 
+# Terraform stuff
+**/.terraform/*
+**/.terragrunt-cache/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .terraform.lock.hcl files
+.terraform.lock.hcl
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
