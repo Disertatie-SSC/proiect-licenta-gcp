@@ -1,6 +1,6 @@
-# terraform {
-#     backend "gcs" {
-#     bucket = "wordpress-tf-state"
-#     prefix = "bootstrap"
-#   }
-# }
+terraform {
+     backend "gcs" {
+     bucket = "wordpress-live-terraform-state"
+     prefix = "bootstrap"
+   }
+}
