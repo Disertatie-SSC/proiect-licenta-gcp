@@ -1,0 +1,53 @@
+---
+steps:
+  # Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '--tag=eu.gcr.io/${PROJECT_ID}/shr-deploy-terraform',
+      '--build-arg=CHECKOV_VERSION=${_CHECKOV_VERSION}',
+      '--build-arg=MARKDOWNLINK_VERSION=${_MARKDOWNLINK_VERSION}',
+      '--build-arg=MDL_VERSION=${_MDL_VERSION}',
+      '--build-arg=PRECOMMIT_VERSION=${_PRECOMMIT_VERSION}',
+      '--build-arg=TF_DOCS_VERSION=${_TF_DOCS_VERSION}',
+      '--build-arg=TFENV_VERSION=${_TFENV_VERSION}',
+      '--build-arg=TFSEC_VERSION=${_TFSEC_VERSION}',
+      '--build-arg=TGENV_VERSION=${_TGENV_VERSION}',
+      '--build-arg=TERRAFORM_VERSION=${_TERRAFORM_VERSION}',
+      '--build-arg=TERRAGRUNT_VERSION=${_TERRAGRUNT_VERSION}',
+      '.'
+    ]
+  # Test
+  - name: 'eu.gcr.io/${PROJECT_ID}/shr-deploy-terraform'
+    entrypoint: /bin/bash
+    args:
+      - '-exEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        gcloud --version;
+        gawk --version | head -n 1;
+        git --version;
+        echo checkov $(checkov --version);
+        echo mdl $(mdl --version);
+        pre-commit --version;
+        terraform-docs --version;
+        tfenv --version;
+        echo tfsec $(tfsec --version);
+        tgenv --version;
+        terraform --version;
+        terragrunt --version;
+        git --version;
+substitutions:
+  # We expect terraform to fill in these values, see main.tf
+  _CHECKOV_VERSION: ''
+  _MARKDOWNLINK_VERSION: ''
+  _MDL_VERSION: ''
+  _PRECOMMIT_VERSION: ''
+  _TF_DOCS_VERSION: ''
+  _TFENV_VERSION: ''
+  _TFSEC_VERSION: ''
+  _TGENV_VERSION: ''
+  _TERRAFORM_VERSION: ''
+  _TERRAGRUNT_VERSION: ''
+images: ['eu.gcr.io/${PROJECT_ID}/shr-deploy-terraform']

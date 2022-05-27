@@ -1,0 +1,24 @@
+#Development dependencies
+beautifulsoup4==4.9.3
+datefinder==0.7.1
+fsspec==2021.8.1
+gcsfs==2021.8.1
+google-cloud-error-reporting==1.2.2
+google-cloud-logging==2.6.0
+google-cloud-pubsub==2.7.0
+google-cloud-storage==1.41.1
+google-cloud-bigquery==2.27.0
+google-api-python-client==2.33.0
+google-auth-httplib2==0.1.0
+google-auth-oauthlib==0.4.6
+google-auth==2.3.3
+looker-sdk==21.20.0
+mypy==0.910
+lxml>=4.6.3
+
+#Testing dependencies
+#coverage==5.5
+#mock==4.0.3
+#pytest-mock==3.6.1
+#pytest==6.2.4
+#pytest-custom_exit_code==0.3.0

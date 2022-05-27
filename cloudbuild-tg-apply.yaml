@@ -1,0 +1,54 @@
+---
+timeout: 1800s
+steps:
+  # pre-commit checks
+  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+    entrypoint: /bin/bash
+    args:
+      - '-eEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        sudo mkdir -p /workspace/.terraform.d/plugin-cache
+        export TF_PLUGIN_CACHE_DIR=/workspace/.terraform.d/plugin-cache
+        sudo chown -R developer:developer /workspace
+        sudo chown -R developer:developer /builder/home
+        # the following 3 lines need to be enabled if GitHub is used as a source repository
+        # gcloud secrets versions access latest --secret=${_GITHUB_TOKEN_ID} --format='get(payload.data)' | tr '_-' '/+' | base64 -d | tr -d '\n' > ~/token.txt
+        # echo '[url "https://oauth2:'$(cat ~/token.txt)'@github.com"]' > ~/.gitconfig
+        # echo '        insteadOf = https://github.com' >> ~/.gitconfig
+        git init
+        git add --all
+        gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
+  # terragrunt init and validate
+  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+    entrypoint: /bin/bash
+    env:
+      - 'TF_PLUGIN_CACHE_DIR=/workspace/.terraform.d/plugin-cache'
+    args:
+      - '-eEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
+        cd /bootstrap
+        terraform init
+  # terragrunt apply
+  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+    entrypoint: /bin/bash
+    env:
+      - 'TF_PLUGIN_CACHE_DIR=/workspace/.terraform.d/plugin-cache'
+    args:
+      - '-eEuo'
+      - 'pipefail'
+      - '-c'
+      - |-
+        gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
+        cd /bootstrap
+        terraform pllan
+options:
+  machineType: 'E2_HIGHCPU_8'
+artifacts:
+  objects:
+    location: 'gs://${_ARTIFACT_BUCKET_NAME}/terraform/cloudbuild/apply/${BUILD_ID}'
+    paths: ['cloudbuild-tg-apply.yaml']
