@@ -33,7 +33,7 @@ steps:
       - |-
         gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
         cd bootstrap/
-        terraform plan
+        terraform init
   # terragrunt plan
   - name: eu.gcr.io/$PROJECT_ID/cloudbuild-containers:latest
     entrypoint: /bin/bash

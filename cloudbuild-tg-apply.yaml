@@ -45,7 +45,7 @@ steps:
       - |-
         gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
         cd /bootstrap
-        terraform pllan
+        terraform plan
 options:
   machineType: 'E2_HIGHCPU_8'
 artifacts:
