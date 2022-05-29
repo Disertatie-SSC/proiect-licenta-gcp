@@ -2,7 +2,7 @@
 timeout: 1800s
 steps:
   # pre-commit checks
-  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+  - name: eu.gcr.io/$PROJECT_ID/cloudbuild-containers:latest
     entrypoint: /bin/bash
     args:
       - '-eEuo'
@@ -22,7 +22,7 @@ steps:
         git add --all
         gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
   # terragrunt init and validate
-  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+  - name: eu.gcr.io/$PROJECT_ID/cloudbuild-containers:latest
     entrypoint: /bin/bash
     env:
       - 'TF_PLUGIN_CACHE_DIR=/workspace/.terraform.d/plugin-cache'
@@ -35,7 +35,7 @@ steps:
         cd bootstrap/
         terraform plan
   # terragrunt plan
-  - name: eu.gcr.io/$PROJECT_ID/shr-deploy-terraform:v2
+  - name: eu.gcr.io/$PROJECT_ID/cloudbuild-containers:latest
     entrypoint: /bin/bash
     env:
       - 'TF_PLUGIN_CACHE_DIR=/workspace/.terraform.d/plugin-cache'
