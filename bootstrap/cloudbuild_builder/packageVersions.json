@@ -1,0 +1,9 @@
+{
+	"checkovVersion": "2.0.504",
+	"markdownlinkVersion": "3.8.7",
+	"mdlVersion": "0.11.0",
+	"tfdocsVersion": "v0.16.0",
+	"tfenvVersion": "v2.2.2",
+	"tfsecVersion": "v0.58.14",
+	"tgenvVersion": "v0.0.3"
+}
