@@ -170,18 +170,18 @@ resource "google_cloudbuild_trigger" "master" {
 
   #trigger_template and github blocks exclude eachother
   #enable trigger_template for Google Source Repositories and github for GitHub repo
-  trigger_template {
-    branch_name = "^main$"
-    repo_name   = "proiect-licenta-gcp"
-  }
-
-  # github {
-  #   owner = "company-name"
-  #   name  = "repo-name"
-  #   push {
-  #     branch = "^main$"
-  #   }
+  # trigger_template {
+  #   branch_name = "^main$"
+  #   repo_name   = "proiect-licenta-gcp"
   # }
+
+  github {
+    owner = "proiect-licenta-gcp"
+    name  = "proiect-licenta-gcp"
+    push {
+      branch = "^main$"
+    }
+  }
 
   substitutions = {
     _TF_SA_EMAIL          = google_service_account.terraform.email
@@ -201,19 +201,19 @@ resource "google_cloudbuild_trigger" "pull_requests" {
 
   #trigger_template and github blocks exclude eachother
   #enable trigger_template for Google Source Repositories and github for GitHub repo
-  trigger_template {
-    branch_name  = "^main$"
-    repo_name    = "proiect-licenta-gcp"
-    invert_regex = true
-  }
-
-  # github {
-  #   owner = "company-name"
-  #   name  = "repo-name"
-  #   pull_request {
-  #     branch = "^main$"
-  #   }
+  # trigger_template {
+  #   branch_name  = "^main$"
+  #   repo_name    = "proiect-licenta-gcp"
+  #   invert_regex = true
   # }
+
+  github {
+    owner = "proiect-licenta-gcp"
+    name  = "proiect-licenta-gcp"
+    pull_request {
+      branch = "^main$"
+    }
+  }
 
   substitutions = {
     _TF_SA_EMAIL          = google_service_account.terraform.email

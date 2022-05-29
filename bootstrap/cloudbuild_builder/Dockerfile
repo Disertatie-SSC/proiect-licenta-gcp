@@ -9,7 +9,6 @@ ENV PATH ${USRDIR}/.local/bin:${PATH}
 ARG CHECKOV_VERSION
 ARG MARKDOWNLINK_VERSION
 ARG MDL_VERSION
-ARG PRECOMMIT_VERSION
 ARG TF_DOCS_VERSION
 ARG TFENV_VERSION
 ARG TFSEC_VERSION
@@ -51,11 +50,10 @@ RUN pip3 install --no-cache-dir --upgrade setuptools && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir checkov=="${CHECKOV_VERSION}" \
     dataclasses \
-    gitpython \
-    pre-commit=="${PRECOMMIT_VERSION}"
+    gitpython 
 
 # npm and gem
-RUN npm install markdown-link-check@"${MARKDOWNLINK_VERSION}" -g --no-save && \
+RUN npm install -g --no-save markdown-link-check@"${MARKDOWNLINK_VERSION}"  && \
     gem install chef-utils -v 16.6.14 && \
     gem install mdl -v "${MDL_VERSION}"
 
