@@ -176,11 +176,12 @@ resource "google_cloudbuild_trigger" "master" {
   # }
 
   github {
-    owner = "proiect-licenta-gcp"
+    owner = "Andrei-Platon-Appsbroker"
     name  = "proiect-licenta-gcp"
     push {
       branch = "^main$"
     }
+
   }
 
   substitutions = {
@@ -197,7 +198,7 @@ resource "google_cloudbuild_trigger" "master" {
 
 resource "google_cloudbuild_trigger" "pull_requests" {
   project     = module.project.project.name
-  description = "terragrunt plan pe baza la pull requests"
+  description = "terragrunt plan la commit in oricare branch"
 
   #trigger_template and github blocks exclude eachother
   #enable trigger_template for Google Source Repositories and github for GitHub repo
@@ -208,10 +209,11 @@ resource "google_cloudbuild_trigger" "pull_requests" {
   # }
 
   github {
-    owner = "proiect-licenta-gcp"
+    owner = "Andrei-Platon-Appsbroker"
     name  = "proiect-licenta-gcp"
     pull_request {
       branch = "^main$"
+      invert_regex = true
     }
   }
 
