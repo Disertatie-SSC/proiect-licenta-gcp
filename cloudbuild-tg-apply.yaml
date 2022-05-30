@@ -31,7 +31,7 @@ steps:
       - '-c'
       - |-
         gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}
-        cd /org
+        cd org
         terragrunt run-all init --terragrunt-non-interactive -input=false -no-color
         terragrunt run-all validate --terragrunt-non-interactive -no-color
         echo "Terragrunt Init Finalizat cu Succes!"
@@ -46,6 +46,7 @@ steps:
       - '-c'
       - |-
         gcloud config set auth/impersonate_service_account ${_TF_SA_EMAIL}  
+        cd org
         terragrunt run-all apply --terragrunt-non-interactive -auto-approve -input=false -no-color
         echo "Schimbarile de Terragrunt aplicate cu succes!!"
 options:
