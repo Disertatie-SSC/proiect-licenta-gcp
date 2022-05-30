@@ -14,13 +14,13 @@ locals {
   underscore_subservicename_check = local.transformed_labels.subservicename == "" ? "" : "_${local.transformed_labels.subservicename}"
 
   # e.g. pd-prod-propellant or pd-prod-propellant-frontend
-  resource_name = "wordpress-${local.transformed_labels.environment}-${local.transformed_labels.servicename}${local.subservicename_check}"
+  resource_name = "wp-${local.transformed_labels.environment}-${local.transformed_labels.servicename}${local.subservicename_check}"
 
   # e.g. pd-prod-propellant-21a6 or pd-prod-propellant-frontend-21a6
   random_resource_name = "${local.resource_name}-${random_id.random.hex}"
 
   # e.g. pd_prod_propellant or pd_prod_propellant_frontend
-  underscore_resource_name = "wordpress-${local.transformed_labels.environment}_${local.transformed_labels.servicename}${local.underscore_subservicename_check}"
+  underscore_resource_name = "wp-${local.transformed_labels.environment}_${local.transformed_labels.servicename}${local.underscore_subservicename_check}"
 
   # e.g. pd_prod_propellant_21a6 or pd_prod_propellant_frontend_21a6
   underscore_random_resource_name = "${local.underscore_resource_name}_${random_id.random.hex}"

@@ -1,13 +1,13 @@
 # ---------------------------------------------------------------------------------------------------------------------
-# TERRAGRUNT CONFIGURATION
-# Terragrunt is a thin wrapper for Terraform that provides extra tools for working with multiple Terraform modules,
-# remote state, and locking: https://github.com/gruntwork-io/terragrunt
+# CONFIGURARI TERRAGRUNT
+# Terragrunt este un wrapper subtire pentru Terraform care furnizeaza uneltele necesare in lucrul cu mai multe module de terraform precum si ,
+# stare detasata si blocare: https://github.com/gruntwork-io/terragrunt
 # ---------------------------------------------------------------------------------------------------------------------
 
-# Configure Terragrunt to automatically store tfstate files: https://terragrunt.gruntwork.io/docs/features/keep-your-remote-state-configuration-dry/#create-remote-state-and-locking-resources-automatically
+# Cum configurezi terragrunt sa stocheze automat fisierele de tip stare: https://terragrunt.gruntwork.io/docs/features/keep-your-remote-state-configuration-dry/#create-remote-state-and-locking-resources-automatically
 remote_state {
   backend = "gcs"
-  # Same state bucket for for all envs - resources are created in bootstrap folder
+  # Acelasi bucket pentru toate  mediile - resursele sunt create in directorul bootstrap
   config = {
     bucket = "wordpress-live-terraform-state"
     prefix = "org/${path_relative_to_include()}/terraform.tfstate"
@@ -18,7 +18,7 @@ remote_state {
   }
 }
 
-# Generate the GCP provider block - resources are created in bootstrap folder
+# Generam codul care permite interactioanrea cu GCP - resursele sunt create in directorul bootstrap
 generate "gcp-provider" {
   path      = "providers.tf"
   if_exists = "overwrite"
@@ -49,19 +49,37 @@ provider "google-beta" {
 EOF
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# PARAMETRI GLOBALI
+# Aceste variable se aplica la toate configurarile sub-directoarelor. Acestea sunt lipte automate in fisierul de configurare
+# copil `terragrunt.hcl` prin blocul de "include"
+# ---------------------------------------------------------------------------------------------------------------------
 
-# ---------------------------------------------------------------------------------------------------------------------
-# GLOBAL PARAMETERS
-# These variables apply to all configurations in this subfolder. These are automatically merged into the child
-# `terragrunt.hcl` config via the include block.
-# ---------------------------------------------------------------------------------------------------------------------
 
 locals {
 }
 
-# Configure root level variables that all resources can inherit. This is especially helpful with multi-account configs
-# where terraform_remote_state data sources are placed directly into the modules.
+# Configurati toate variabilele de baza pe care toate resursele le mostenesc. Acest lucru este util mai ales pentru configurari multiple
+# unde sursele de date ale terraform_remote_state sunt plasate direct in modul
 inputs = {
+
+  services = [
+    "iam.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "billingbudgets.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "container.googleapis.com",
+    "sqladmin.googleapis.com",
+    "containerscanning.googleapis.com",
+    "storage-api.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "cloudkms.googleapis.com",
+    "logging.googleapis.com",
+    "monitoring.googleapis.com",
+    "appengine.googleapis.com",
+    "secretmanager.googleapis.com"
+  ]
 
   billing_account = "01CF65-E838CD-27FD32",
   org_id          = "651150601306"

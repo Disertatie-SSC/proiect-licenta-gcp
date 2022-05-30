@@ -17,7 +17,7 @@ module "project" {
   billing_account = local.billing_account
 
   labels = {
-    email          = "sh4gie@gmail.com"
+    email          = "andrei.platon@infoifr-licenta.net"
     live           = "no"
     environment    = "live"
     servicename    = "terraform"
