@@ -17,7 +17,7 @@ module "project" {
   billing_account = local.billing_account
 
   labels = {
-    email          = "sh4gie@gmail.com"
+    email          = "andrei.platon@infoifr-licenta.net"
     live           = "no"
     environment    = "live"
     servicename    = "terraform"
@@ -163,10 +163,10 @@ _TGENV_VERSION="${local.package_versions.tgenvVersion}"\
   EOT
 }
 
-# Cloud Build repo triggers
+# Cloud Build triggere pt fiecare situatie
 resource "google_cloudbuild_trigger" "master" {
   project     = module.project.project.name
-  description = "terragrunt apply la schimbari in main"
+  description = "terragrunt plan orice commit in branch-uri"
 
   #trigger_template and github blocks exclude eachother
   #enable trigger_template for Google Source Repositories and github for GitHub repo
@@ -180,6 +180,7 @@ resource "google_cloudbuild_trigger" "master" {
     name  = "proiect-licenta-gcp"
     push {
       branch = "^main$"
+      invert_regex = true
     }
 
   }
@@ -190,7 +191,7 @@ resource "google_cloudbuild_trigger" "master" {
     _GITHUB_TOKEN_ID      = google_secret_manager_secret.github_token_id.secret_id
   }
 
-  filename = "cloudbuild-tg-apply.yaml"
+  filename = "cloudbuild-tg-plan.yaml"
   depends_on = [
     module.image_builder,
   ]
@@ -198,7 +199,7 @@ resource "google_cloudbuild_trigger" "master" {
 
 resource "google_cloudbuild_trigger" "pull_requests" {
   project     = module.project.project.name
-  description = "terragrunt plan la commit in oricare branch"
+  description = "Trigger care ruleaza doar cand avem un Pull Request"
 
   #trigger_template and github blocks exclude eachother
   #enable trigger_template for Google Source Repositories and github for GitHub repo
@@ -213,7 +214,6 @@ resource "google_cloudbuild_trigger" "pull_requests" {
     name  = "proiect-licenta-gcp"
     pull_request {
       branch = "^main$"
-      invert_regex = true
     }
   }
 
@@ -223,7 +223,7 @@ resource "google_cloudbuild_trigger" "pull_requests" {
     _GITHUB_TOKEN_ID      = google_secret_manager_secret.github_token_id.secret_id
   }
 
-  filename = "cloudbuild-tg-plan.yaml"
+  filename = "cloudbuild-tg-apply.yaml"
   depends_on = [
     module.image_builder,
   ]
