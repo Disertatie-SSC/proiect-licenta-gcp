@@ -109,4 +109,80 @@ module "gke" {
       "default-node-pool",
     ]
   }
+  
+
+
+}
+
+resource "null_resource" "nullremote1" {
+
+  depends_on = [module.gke]
+  provisioner "local-exec" {
+
+    command = "gcloud container clusters get-credentials ${module.gke.name} --zone ${module.gke.region} --project wp-live-kubernets-6662"
+    }
+}
+
+
+resource "kubernetes_deployment" "wordpress" {
+  metadata {
+    name = "wordpress-pod"
+    labels = {
+      App = "Wordpress-Gke"
+    }
+  }
+
+  spec {
+    replicas = 2
+    selector {
+      match_labels = {
+        App = "Wordpress-Gke"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          App = "Wordpress-Gke"
+        }
+      }
+      spec {
+        container {
+          image = "wordpress"
+          name  = "example"
+
+          port {
+            container_port = 80
+          }
+
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_service" "wordpress-lb" {
+  metadata {
+    name = "wordpress-lb"
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.wordpress.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      port        = 80
+      target_port = 80
+    }
+
+    type = "LoadBalancer"
+  }
 }
