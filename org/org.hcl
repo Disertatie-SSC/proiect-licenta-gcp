@@ -78,7 +78,8 @@ inputs = {
     "logging.googleapis.com",
     "monitoring.googleapis.com",
     "appengine.googleapis.com",
-    "secretmanager.googleapis.com"
+    "secretmanager.googleapis.com",
+    "dns.googleapis.com"
   ]
 
   billing_account = "01CF65-E838CD-27FD32",

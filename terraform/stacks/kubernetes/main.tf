@@ -71,6 +71,7 @@ module "gke" {
 
     default-node-pool = [
       "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/ndev.clouddns.readwrite",
     ]
   }
 
@@ -125,6 +126,7 @@ resource "null_resource" "nullremote1" {
 
 
 resource "kubernetes_deployment" "wordpress" {
+  depends_on = [module.gke]
   metadata {
     name = "wordpress-pod"
     labels = {
@@ -184,5 +186,6 @@ resource "kubernetes_service" "wordpress-lb" {
     }
 
     type = "LoadBalancer"
+    load_balancer_ip = "34.148.46.204"
   }
 }
