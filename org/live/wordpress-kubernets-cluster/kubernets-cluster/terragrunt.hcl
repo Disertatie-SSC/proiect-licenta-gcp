@@ -40,4 +40,8 @@ inputs = {
   range_pods = "gke-container-subnet"
   range_services= "gke-service-subnet"
   serviceaccountgke = "wp-kubernetes-wb3@wp-live-kubernets-6662.iam.gserviceaccount.com"
+
+# variabile deployment cu database
+    gke_credentials_secret = "cloudsql-instance-credentials-terraform"
+    database = "wordpress"
 }
