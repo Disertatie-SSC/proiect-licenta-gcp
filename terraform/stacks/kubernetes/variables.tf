@@ -21,3 +21,13 @@ variable "range_services" {
 variable "serviceaccountgke" {
     description = "Service account for gke"
 }
+
+#variabile deployment 
+
+variable "gke_credentials_secret" {
+  description = "secret care contine credentialele de conectare la baza de date"
+}
+
+variable "database" {
+    description = "nume baza de date"
+}
